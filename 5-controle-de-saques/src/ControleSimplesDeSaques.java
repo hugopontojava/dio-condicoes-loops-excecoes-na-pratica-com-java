@@ -2,25 +2,35 @@ import java.util.Scanner;
 
 public class ControleSimplesDeSaques {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
+        try {
+            System.out.println("Digite o saldo da conta:");
+            double limiteDiario = sc.nextDouble();
+            if (limiteDiario <= 0) {
+                sc.close();
+            }
+            for (double i = 0; i < limiteDiario; i++) {
+                System.out.println("Digite o quanto deseja sacar:");
+                double valorSaque = sc.nextDouble();
+                if (valorSaque <= limiteDiario) {
+                    limiteDiario -= valorSaque;
+                    System.out.println("Saque realizado.");
+                    System.out.println("Limite restante: " + limiteDiario);
+                } else {
+                    throw new LimiteAtingidoException("Limite diário de saque atingido");
+                }
+            }
+        } catch (LimiteAtingidoException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
+            System.out.println("Transações encerradas.");
+            sc.close();
+        }
+    }
 
-        double limiteDiario = scanner.nextDouble();
-
-        // TODO: Crie um loop 'for' para iterar sobre os saques:
-
-        // TODO: Solicite ao usuário o valor do saque:
-
-
-        // TODO: Verifique se o valor do saque é zero, encerrando as transações:
-        // Dica: Utilize um 'if/else' para verificar as condições do valorSaque e o limiteDiario;
-
-
-        // TODO: Se o valor do saque não ultrapassar o limite diário, subtraia o valor do saque do limite diário:
-
-
-        // TODO: Informe que o saque foi realizado e mostre o limite restante:
-
-        // Fechamos o Scanner para evitar vazamento de recursos:
-        scanner.close();
+    public static class LimiteAtingidoException extends Exception {
+        public LimiteAtingidoException(String msg) {
+            super(msg);
+        }
     }
 }
